@@ -352,7 +352,6 @@ PRODUCT_VENDOR_PROPERTIES += \
 persist.audio.fluence.voicecomm=true
 
 ifneq ($(GENERIC_ODM_IMAGE),true)
-$(warning "Enabling codec2.0 SW only for non-generic odm build variant")
 #Rank OMX SW codecs lower than OMX HW codecs
 PRODUCT_VENDOR_PROPERTIES += debug.stagefright.omx_default_rank=0
 endif
