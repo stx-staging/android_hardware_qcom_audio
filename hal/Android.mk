@@ -134,6 +134,17 @@ ifeq ($(TARGET_BOARD_AUTO),true)
   LOCAL_CFLAGS += -DPLATFORM_AUTO
 endif
 
+ifeq ($(ENABLE_AUDIO_LEGACY_TECHPACK),true)
+ifeq ($(TARGET_BOARD_AUTO),true)
+  LIBRARY_TINYCOMPRESS := libqti-tinycompress
+  LIBRARY_TINYCOMPRESS_INC := $(TOP)/vendor/qcom/opensource/tinycompress/include
+else
+  LIBRARY_TINYCOMPRESS := libtinycompress
+  LIBRARY_TINYCOMPRESS_INC := external/tinycompress/include
+endif
+  LOCAL_CFLAGS += -DENABLE_AUDIO_LEGACY_PURE
+endif
+
 ifeq ($(TARGET_SUPPORTS_WEARABLES),true)
    LOCAL_CFLAGS += -DENABLE_HFP_CALIBRATION
 endif
@@ -147,7 +158,7 @@ LOCAL_CFLAGS += -Wno-macro-redefined
 LOCAL_HEADER_LIBRARIES := libhardware_headers
 
 ifeq ($(ENABLE_AUDIO_LEGACY_TECHPACK),true)
-LOCAL_HEADER_LIBRARIES += qti_legacy_audio_kernel_uapi
+  LOCAL_HEADER_LIBRARIES += qti_legacy_audio_kernel_uapi
 endif
 
 LOCAL_SRC_FILES := \

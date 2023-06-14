@@ -142,6 +142,7 @@ MM_AUDIO += capi_v2_synth
 MM_AUDIO += capi_v2_avc
 MM_AUDIO += capi_v2_asrc
 MM_AUDIO += capi_v2_ecmx
+MM_AUDIO += capi_v2_vote
 MM_AUDIO += icc_module.so.1
 MM_AUDIO += sec_module.so.1
 MM_AUDIO += audio-nxp-auto
@@ -155,6 +156,7 @@ MM_AUDIO += liba2bstack-protobuf
 MM_AUDIO += a2b-app
 MM_AUDIO += liba2bdriver
 MM_AUDIO += libacdbloaderclient
+MM_AUDIO += libacdbloadersocketclient
 MM_AUDIO += acdb_loader_service
 MM_AUDIO += libaudiohalpluginclient
 MM_AUDIO += audio_hal_plugin_service
@@ -163,10 +165,15 @@ MM_AUDIO += libqtiautobundle
 MM_AUDIO += autoeffects
 MM_AUDIO += autoeffects.xml
 MM_AUDIO += audcalparam_commands.cfg
+MM_AUDIO += audcalparam_commands_elite.cfg
 MM_AUDIO += libsynth
 MM_AUDIO += libicc
 
+ifneq ( ,$(filter T Tiramisu 13, $(PLATFORM_VERSION)))
+MM_AUDIO += vendor.qti.hardware.automotive.audiocontrol-service
+else
 MM_AUDIO += android.hardware.automotive.audiocontrol-service.example
+endif
 MM_AUDIO += libaudiopowerpolicy
 endif
 
@@ -211,9 +218,11 @@ TARGET_USES_AOSP_FOR_AUDIO := false
 endif
 
 # Audio configuration file
-ifeq ($(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX),msmnile_au)
+ifeq ($(TARGET_GVMGH_SPECIFIC), false)
 -include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
-else ifeq ($(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX),msmnile_gvmq)
+else ifeq ($(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX)$(TARGET_BOARD_DERIVATIVE_SUFFIX),msmnile_au_km4)
+-include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
+else ifeq ($(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX)$(TARGET_BOARD_DERIVATIVE_SUFFIX),msmnile_au_ar)
 -include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
 else ifeq ($(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX),sm6150_au)
 -include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmsteppe_au/msmsteppe_au.mk

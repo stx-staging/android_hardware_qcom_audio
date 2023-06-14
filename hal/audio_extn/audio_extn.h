@@ -33,6 +33,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Changes from Qualcomm Innovation Center are provided under the following license:
+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ *
  */
 
 #ifndef AUDIO_EXTN_H
@@ -112,7 +117,7 @@ int audio_extn_parse_compress_metadata(struct stream_out *out,
 #define AUDIO_OUTPUT_BIT_WIDTH ((config->offload_info.bit_width == 32) ? 24\
                                    :config->offload_info.bit_width)
 
-#ifndef ENABLE_EXTENDED_COMPRESS_FORMAT
+#if !defined(ENABLE_EXTENDED_COMPRESS_FORMAT) || defined(ENABLE_AUDIO_LEGACY_PURE)
 #define compress_set_metadata(compress, metadata) (0)
 #define compress_get_metadata(compress, metadata) (0)
 #define compress_set_next_track_param(compress, codec_options) (0)
@@ -1422,6 +1427,7 @@ typedef struct auto_hal_init_config {
     fp_platform_set_echo_reference_t             fp_platform_set_echo_reference;
     fp_platform_get_eccarstate_t                 fp_platform_get_eccarstate;
     fp_generate_patch_handle_t                   fp_generate_patch_handle;
+    fp_platform_get_pcm_device_id_t              fp_platform_get_pcm_device_id;
 } auto_hal_init_config_t;
 // END: AUTO_HAL FEATURE ==================================================
 
@@ -1481,4 +1487,5 @@ snd_device_t audio_extn_get_loopback_snd_device(struct audio_device *adev,
 
 void audio_get_vendor_config_path(char* config_file_path, int path_size);
 bool audio_extn_is_concurrent_pcm_record_enabled();
+bool audio_extn_is_concurrent_low_latency_pcm_record_enabled();
 #endif /* AUDIO_EXTN_H */
